@@ -28,7 +28,7 @@ public class BaseController {
     }
 
     @GetMapping("/books")
-    public ResponseEntity<List<String>> getBooks(){
+    public ResponseEntity<List<String>> getBooks() {
         List<String> books = new ArrayList<>();
         books.add("Book 1");
         books.add("Book 2");
@@ -36,12 +36,12 @@ public class BaseController {
         books.add("Book 4");
         books.add("Book 5");
         books.add("Book 6");
-        return new ResponseEntity<List<String>>(books,HttpStatus.OK);
+        return new ResponseEntity<List<String>>(books, HttpStatus.OK);
     }
 
 
     @GetMapping("/books/{bookIndex}")
-    public ResponseEntity<String> getBook(@PathVariable("bookIndex")Integer index){
+    public ResponseEntity<String> getBook(@PathVariable("bookIndex") Integer index) {
         List<String> books = new ArrayList<>();
         books.add("Book 1");
         books.add("Book 2");
@@ -50,9 +50,9 @@ public class BaseController {
         books.add("Book 5");
         books.add("Book 6");
         String book = "Does not exist";
-        if (index<books.size()){
-            book=books.get(index);
+        if (index < books.size()) {
+            book = books.get(index);
         }
-        return new ResponseEntity<String>(book,HttpStatus.OK);
+        return new ResponseEntity<String>(book, HttpStatus.OK);
     }
 }
