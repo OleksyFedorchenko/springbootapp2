@@ -16,16 +16,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void saveProduct(ProductEntity product) {
-
+        productRepository.save(product);
     }
 
     @Override
     public List<ProductEntity> findAllProducts() {
-        return null;
+        return productRepository.findAll(); //select * from products
     }
 
     @Override
     public ProductEntity findProductById(Long id) {
-        return null;
+        return productRepository.findById(id).get();
     }
 }
