@@ -1,14 +1,41 @@
 package ua.logos.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ua.logos.entity.ProductEntity;
+import ua.logos.service.ProductService;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class BaseController {
+
+    @Autowired
+    private ProductService productService;
+
+    @GetMapping("test-save")
+    public ResponseEntity<?> testSaveProduct() {
+        ProductEntity productEntity=new ProductEntity();
+        productEntity.setName("Iphone X");
+        productEntity.setDescription("bla bla");
+        productEntity.setPrice(new BigDecimal(999.99).setScale(2, RoundingMode.FLOOR));
+        productEntity.setQwt(20);
+        productEntity.setImage("image.png");
+        productService.saveProduct(productEntity);
+        System.out.println(productEntity.getPrice());
+        return new ResponseEntity < Void > (HttpStatus.OK);
+    }
+
+
+    @GetMapping("test-get")
+    public ResponseEntity<List<ProductEntity>> testGetAll(){
+        List<ProductEntity> products=productService.findAllProducts();
+        return new ResponseEntity<List<ProductEntity>>(products,HttpStatus.OK);    }
 
     //@RequestMapping(value = "/",method = RequestMethod.GET)
     @GetMapping("/")
