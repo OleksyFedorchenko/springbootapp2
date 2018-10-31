@@ -34,4 +34,12 @@ public class ProductServiceImpl implements ProductService {
     public ProductEntity findProductById(Long id) {
         return productRepository.findById(id).get();
     }
+
+    @Override
+    public void deleteProductById(Long id) {
+        ProductEntity product=productRepository.findById(id).get();
+        if(product!=null){
+        productRepository.deleteById(id);}
+        else System.out.println("product not found");
+    }
 }
