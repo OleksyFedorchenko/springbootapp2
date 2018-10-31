@@ -18,9 +18,11 @@ public class BaseController {
     @Autowired
     private ProductService productService;
 
+
+    //Запис даних в базу
     @GetMapping("test-save")
     public ResponseEntity<?> testSaveProduct() {
-        ProductEntity productEntity=new ProductEntity();
+        ProductEntity productEntity = new ProductEntity();
         productEntity.setName("Iphone X");
         productEntity.setDescription("bla bla");
         productEntity.setPrice(new BigDecimal(999.99).setScale(2, RoundingMode.FLOOR));
@@ -28,14 +30,15 @@ public class BaseController {
         productEntity.setImage("image.png");
         productService.saveProduct(productEntity);
         System.out.println(productEntity.getPrice());
-        return new ResponseEntity < Void > (HttpStatus.OK);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-
+    //отримати дані з бази
     @GetMapping("test-get")
-    public ResponseEntity<List<ProductEntity>> testGetAll(){
-        List<ProductEntity> products=productService.findAllProducts();
-        return new ResponseEntity<List<ProductEntity>>(products,HttpStatus.OK);    }
+    public ResponseEntity<List<ProductEntity>> testGetAll() {
+        List<ProductEntity> products = productService.findAllProducts();
+        return new ResponseEntity<List<ProductEntity>>(products, HttpStatus.OK);
+    }
 
     //@RequestMapping(value = "/",method = RequestMethod.GET)
     @GetMapping("/")
