@@ -29,4 +29,7 @@ public class ProductEntity {
     private int qwt;
     @Column(nullable = true)
     private String image;
+    @ManyToOne
+    @JoinColumn(name="category_id")
+    private CategoryEntity category;
 }

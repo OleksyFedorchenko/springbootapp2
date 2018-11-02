@@ -1,15 +1,16 @@
 package ua.logos.service;
 
-import ua.logos.entity.ProductEntity;
+import ua.logos.domain.ProductDTO;
+
 
 import java.util.List;
 
 public interface ProductService {
-    void saveProduct(ProductEntity product);
+    void saveProduct(ProductDTO product);
 
-    List<ProductEntity> findAllProducts();
+    List<ProductDTO> findAllProducts();
 
-    ProductEntity findProductById(Long id);
+    ProductDTO findProductById(Long id);
 
     void deleteProductById(Long id);
 }
