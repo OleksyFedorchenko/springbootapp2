@@ -9,6 +9,7 @@ import ua.logos.domain.ProductDTO;
 import ua.logos.entity.ProductEntity;
 import ua.logos.service.ProductService;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -19,6 +20,13 @@ public class ProductController {
 
     //localhost:8080/products
 
+
+    @GetMapping("search")
+    public ResponseEntity<?> getProductByName(@RequestParam("name") String name){                 //для того коли в назві є пробіл або /
+        ProductDTO product=productService.findProductByName(name);
+        return new ResponseEntity<ProductDTO>(product,HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<?> createProduct(@RequestBody ProductDTO product) {
         productService.saveProduct(product);
@@ -28,6 +36,12 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<ProductDTO>> getProducts(){
         List<ProductDTO> products=productService.findAllProducts();
+        return new ResponseEntity<List<ProductDTO>>(products,HttpStatus.OK);
+    }
+
+    @GetMapping("searchlike")
+    public ResponseEntity<List<ProductDTO>> getProductsContains(@RequestParam("name")String name, @RequestParam("price")BigDecimal price){
+        List<ProductDTO> products=productService.findProductByNameLikeAndPrice(name,price);
         return new ResponseEntity<List<ProductDTO>>(products,HttpStatus.OK);
     }
 

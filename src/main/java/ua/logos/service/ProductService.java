@@ -3,6 +3,7 @@ package ua.logos.service;
 import ua.logos.domain.ProductDTO;
 
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductService {
@@ -13,4 +14,7 @@ public interface ProductService {
     ProductDTO findProductById(Long id);
 
     void deleteProductById(Long id);
+
+    ProductDTO findProductByName(String name);
+    List<ProductDTO> findProductByNameLikeAndPrice(String name, BigDecimal price);
 }

@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import ua.logos.Repository.ProductRepository;
 import ua.logos.domain.ProductDTO;
 import ua.logos.entity.ProductEntity;
+import ua.logos.exception.AlreadyExistsException;
+import ua.logos.exception.ResourceNotFoundException;
 import ua.logos.service.ProductService;
 import ua.logos.utils.ObjectMapperUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 //@Component
@@ -32,7 +35,10 @@ public class ProductServiceImpl implements ProductService {
 //        product.setPrice(productDTO.getPrice());
 //        product.setImage(productDTO.getImage());
 //        product.setQwt(productDTO.getQwt());
-
+        ProductEntity productEntity=productRepository.findByName(productDTO.getName());
+        if (productEntity!=null){
+            throw new AlreadyExistsException("Product with name ["+productDTO.getName()+"]already exists");
+        }
         ProductEntity product =modelMapper.map(productDTO,ProductEntity.class);
 
         productRepository.save(product);
@@ -47,16 +53,33 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO findProductById(Long id) {
-        ProductEntity product = productRepository.findById(id).get();
+        ProductEntity product = productRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Product with id["+id+"]not found"));
+
         ProductDTO productDTO=modelMapper.map(product,ProductDTO.class);
         return productDTO;
     }
 
     @Override
     public void deleteProductById(Long id) {
-        ProductEntity product = productRepository.findById(id).get();
-        if (product != null) {
+        ProductEntity product = productRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Could not delete product with id["+id+"]not found"));;
             productRepository.deleteById(id);
-        } else System.out.println("product not found");
+    }
+
+    @Override
+    public ProductDTO findProductByName(String name) {
+        ProductEntity product = productRepository.findByName(name);
+        if(product==null){
+            throw new ResourceNotFoundException("Product with id["+name+"]not found");}
+        ProductDTO productDTO=modelMapper.map(product,ProductDTO.class);
+        return productDTO;
+    }
+
+
+    @Override
+    public List<ProductDTO> findProductByNameLikeAndPrice(String name, BigDecimal price) {
+        List<ProductEntity> productEntities=productRepository.findByNameContainingAndPriceIsBefore(name,price);
+        List<ProductDTO> productDTOList = modelMapper.mapAll(productEntities,ProductDTO.class);
+        return productDTOList; //select * from products
     }
 }
