@@ -25,14 +25,12 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDTO> findAllCategories() {
         List<CategoryEntity> categoryEntities=categoryRepository.findAll();
-        List<CategoryDTO> categoryDTOList = modelMapper.mapAll(categoryEntities,CategoryDTO.class);
-        return categoryDTOList;
+        return modelMapper.mapAll(categoryEntities,CategoryDTO.class);
     }
 
     @Override
     public CategoryDTO findCategoryById(Long id) {
         CategoryEntity category = categoryRepository.findById(id).get();
-        CategoryDTO categoryDTO=modelMapper.map(category,CategoryDTO.class);
-        return categoryDTO;
+        return modelMapper.map(category,CategoryDTO.class);
     }
 }
